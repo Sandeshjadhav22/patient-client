@@ -96,12 +96,12 @@ export default function ConsultationPage({
           },
           body: JSON.stringify(requestData),
         });
-
+           
         if (response.ok) {
           console.log('Consultation created successfully!');
-          router.push('/consultation/confirmation'); // Redirect to confirmation page
+          router.push('/consultation/confirmation'); 
         } else {
-          console.error('Failed to create consultation:', await response.json());
+          console.error('Failed to create consultation');
         }
       } catch (error) {
         console.error('Error during consultation submission:', error);

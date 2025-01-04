@@ -123,7 +123,7 @@ export default function PatientSignIn() {
         </CardContent>
         <CardFooter className="flex justify-between">
           <Link
-            href="/patient/signup"
+            href="/signup"
             className="text-sm text-blue-600 hover:underline"
           >
             Don't have an account? Sign up
