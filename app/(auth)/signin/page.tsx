@@ -128,12 +128,7 @@ export default function PatientSignIn() {
           >
             Don't have an account? Sign up
           </Link>
-          <Link
-            href="/patient/forgot-password"
-            className="text-sm text-blue-600 hover:underline"
-          >
-            Forgot password?
-          </Link>
+        
         </CardFooter>
       </Card>
     </div>
