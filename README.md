@@ -16,21 +16,6 @@ I'm a full-stack developer with a passion for building beautiful and functional 
 **Server:** Node, Express, mongoDb
 
 
-## Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`PORT`
-
-`JWT_SECRET=`
-
-`MONGODB_URL=`
-
-`CLODINARY_CLOUD_NAME=`
-
-`CLODINARY_API_KEY=`
-
-`CLODINARY_API_SECRET=`
 ## Screenshots
 
 ![App Screenshot](https://drive.google.com/file/d/1znF4hV7gpmcGfAnli4V92VVdzDEizERU/view?usp=sharing)
