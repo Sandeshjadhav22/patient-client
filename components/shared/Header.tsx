@@ -21,7 +21,6 @@ const useAuth = () => {
   useEffect(() => {
     
     const checkAuth = async () => {
-      // Check if user is signed in
       const authState = localStorage.getItem('authState')
       if (authState) {
         setIsSignedIn(true)
@@ -32,7 +31,6 @@ const useAuth = () => {
   }, [])
 
   const signIn = () => {
-    // Simulate sign in
     const user = { name: 'John Doe', email: 'john@example.com', image: '/placeholder.svg' }
     localStorage.setItem('authState', JSON.stringify(user))
     setIsSignedIn(true)
@@ -69,14 +67,14 @@ export function Header() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Profile</DropdownMenuItem>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem onClick={signOut}>Sign out</DropdownMenuItem>
+                {/* <DropdownMenuItem onClick={signOut}>Sign out</DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <>
-              <Button variant="outline" onClick={signIn}>Sign In</Button>
+              {/* <Button variant="outline" onClick={signIn}>Sign In</Button> */}
               <Link href="/patient/signup">
-                <Button>Sign Up</Button>
+                {/* <Button>Sign Up</Button>  */}
               </Link>
             </>
           )}
