@@ -13,16 +13,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-// This is a placeholder for the actual auth state management
-// In a real app, you'd use a proper auth system like NextAuth.js
+
 const useAuth = () => {
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [user, setUser] = useState<{ name: string, email: string, image: string } | null>(null)
 
   useEffect(() => {
-    // Simulate checking auth state
+    
     const checkAuth = async () => {
-      // This would typically be an API call to check the session
+      // Check if user is signed in
       const authState = localStorage.getItem('authState')
       if (authState) {
         setIsSignedIn(true)

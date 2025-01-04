@@ -6,8 +6,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useRouter } from 'next/navigation'
 
 export default function PatientSignUp() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     profilePicture: null as File | null,
     name: '',
@@ -16,8 +18,10 @@ export default function PatientSignUp() {
     phoneNumber: '',
     surgeryHistory: '',
     illnessHistory: '',
+    password: ''
   })
-
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -38,10 +42,51 @@ export default function PatientSignUp() {
   }
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-  
-    console.log('Form submitted:', formData)
-    //  API call here
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    try {
+      const formDataToSend = new FormData();
+      
+      if (formData.profilePicture) {
+        formDataToSend.append('profilePicture', formData.profilePicture);
+      }
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('age', formData.age);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('phoneNumber', formData.phoneNumber);
+      formDataToSend.append('surgeryHistory', formData.surgeryHistory);
+      formDataToSend.append('illnessHistory', formData.illnessHistory);
+      formDataToSend.append('password', formData.password);
+
+      const response = await fetch(
+        "http://localhost:8080/api/patient/signup",
+        {
+          method: "POST",
+          credentials: "include",
+          body: formDataToSend
+        }
+      );
+
+      if (!response.ok) {
+        const data = await response.json();
+        setError(data.message || "Failed to signup");
+        return;
+      }
+
+      const { _id, token } = await response.json();
+      localStorage.setItem("userId", _id);
+      localStorage.setItem("authToken", token);
+
+      setSuccess("Signup successful");
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
+    } catch (error) {
+      setError("Something went wrong. Please try again.");
+      console.error("Error during signup:", error);
+    }
   }
 
   return (
@@ -52,6 +97,8 @@ export default function PatientSignUp() {
           <CardDescription>Create your patient account to get started</CardDescription>
         </CardHeader>
         <CardContent>
+          {error && <div className="text-red-500 mb-4">{error}</div>}
+          {success && <div className="text-green-500 mb-4">{success}</div>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="profilePicture">Profile Picture</Label>
@@ -101,16 +148,11 @@ export default function PatientSignUp() {
               <Label htmlFor="illnessHistory">History of Illness</Label>
               <Textarea id="illnessHistory" name="illnessHistory" value={formData.illnessHistory} onChange={handleInputChange} />
             </div>
-            {formData.illnessHistory && (
-              <div className="mt-2 p-2 bg-gray-100 rounded">
-                <Label>Illness History:</Label>
-                <ul className="list-disc pl-5">
-                  {formData.illnessHistory.split(',').map((illness, index) => (
-                    <li key={index}>{illness.trim()}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" name="password" type="password" value={formData.password} onChange={handleInputChange} required />
+            </div>
+            
             <Button type="submit" className="w-full">Sign Up</Button>
           </form>
         </CardContent>
@@ -118,4 +160,3 @@ export default function PatientSignUp() {
     </div>
   )
 }
-
