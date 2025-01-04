@@ -1,29 +1,47 @@
-import { DoctorCard } from "@/components/shared/DoctorCard"
+"use client";
+import { DoctorCard } from "@/components/shared/DoctorCard";
+import { useEffect, useState } from "react";
 
-
-
-// api call from database
-
-
-const doctors = [
-  { id: '1', name: 'Dr. John Doe', specialty: 'Cardiologist', imageUrl: '/placeholder.svg?height=200&width=200' },
-  { id: '2', name: 'Dr. Jane Smith', specialty: 'Dermatologist', imageUrl: '/placeholder.svg?height=200&width=200' },
-  { id: '3', name: 'Dr. Mike Johnson', specialty: 'Pediatrician', imageUrl: '/placeholder.svg?height=200&width=200' },
-  { id: '4', name: 'Dr. Sarah Brown', specialty: 'Neurologist', imageUrl: '/placeholder.svg?height=200&width=200' },
-  { id: '5', name: 'Dr. Chris Lee', specialty: 'Orthopedic Surgeon', imageUrl: '/placeholder.svg?height=200&width=200' },
-  { id: '6', name: 'Dr. Emily Chen', specialty: 'Psychiatrist', imageUrl: '/placeholder.svg?height=200&width=200' },
-]
+interface Doctor {
+  _id: string;
+  name: string;
+  specialty: string;
+  profilePicture: string;
+}
 
 export default function DoctorsPage() {
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/patient/getAllDoctors"
+        );
+        const data = await response.json();
+        setDoctors(data);
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Our Doctors</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-14">
         {doctors.map((doctor) => (
-          <DoctorCard key={doctor.id} {...doctor} />
+          <DoctorCard
+            key={doctor._id}
+            id={doctor._id}
+            name={doctor.name}
+            specialty={doctor.specialty}
+            imageUrl={doctor.profilePicture}
+          />
         ))}
       </div>
     </div>
-  )
+  );
 }
-

@@ -1,3 +1,4 @@
+"use client";
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
@@ -16,7 +17,7 @@ export function DoctorCard({ id, name, specialty, imageUrl }: DoctorCardProps) {
       <CardContent className="p-0">
         <div className="relative h-48 w-full">
           <Image
-            src={imageUrl}
+            src={imageUrl || '/placeholder.svg?height=200&width=200'}
             alt={`Dr. ${name}`}
             fill
             style={{ objectFit: 'cover' }}
